@@ -1,73 +1,70 @@
 import PropTypes from 'prop-types';
 
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import s from './ContactForm.module.scss';
 
 import { v4 as uuidv4 } from 'uuid';
 
-class ContactForm extends Component {
-  state = {
-    name: '',
-    number: '',
-  };
+const ContactForm = props => {
+  const [name, setName] = useState('')
+  const [number, setNumber] = useState('')
 
-  onSubmitHandler = event => {
+  const onSubmitHandler = event => {
     event.preventDefault();
-
-    const { name, number } = this.state;
-
     if (name && number) {
-      this.props.getContact({
+      props.getContact({
         id: uuidv4(),
         name,
         number,
       });
     }
-
-    this.setState({
-      name: '',
-      number: '',
-    });
+    setName('')
+    setNumber('')
   };
 
-  onChangeInputHandler = event => {
+  const onChangeInputHandler = event => {
     const { name, value } = event.currentTarget;
-    this.setState({
-      [name]: value,
-    });
+    switch(name){
+      case 'name':
+        setName(value)
+        return
+      case 'number':
+        setNumber(value)
+        return
+      default:
+        return
+    }
   };
 
-  render() {
-    return (
-      <div className={s.ContactForm}>
-        <form onSubmit={this.onSubmitHandler}>
-          <label>
-            <span className={s.ContactForm__title}>Name</span>
-            <input
-              className={s.ContactForm__input}
-              type="text"
-              name="name"
-              value={this.state.name}
-              onChange={this.onChangeInputHandler}
-            />
-          </label>
-          <label>
-            <span className={s.ContactForm__title}>Phone</span>
-            <input
-              className={s.ContactForm__input}
-              type="text"
-              name="number"
-              value={this.state.number}
-              onChange={this.onChangeInputHandler}
-            />
-          </label>
-          <button className={s.ContactForm__btn} type="submit">
-            Add contact
-          </button>
-        </form>
-      </div>
-    );
-  }
+  return (
+    <div className={s.ContactForm}>
+      <form onSubmit={onSubmitHandler}>
+        <label>
+          <span className={s.ContactForm__title}>Name</span>
+          <input
+            className={s.ContactForm__input}
+            type="text"
+            name="name"
+            value={name}
+            onChange={onChangeInputHandler}
+          />
+        </label>
+        <label>
+          <span className={s.ContactForm__title}>Phone</span>
+          <input
+            className={s.ContactForm__input}
+            type="text"
+            name="number"
+            value={number}
+            onChange={onChangeInputHandler}
+          />
+        </label>
+        <button className={s.ContactForm__btn} type="submit">
+          Add contact
+        </button>
+      </form>
+    </div>
+  );
 }
 
 export default ContactForm;

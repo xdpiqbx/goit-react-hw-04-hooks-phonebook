@@ -16,7 +16,6 @@ export default function App (){
 
   useEffect(()=>{
     localStorage.setItem('contacts', JSON.stringify(contacts))
-    console.log("useEffect contacts");
   }, [contacts])
   
   const getContact = newContact => {
@@ -52,8 +51,6 @@ export default function App (){
     const newContactList = JSON.parse(contactsFromLocalstorage).filter(
       contact => contact.id !== id,
     );
-    localStorage.setItem('contacts', JSON.stringify(newContactList));
-
     setContacts(newContactList)
   };
 
